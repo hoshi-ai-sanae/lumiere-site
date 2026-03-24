@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星の子からのメッセージ ✦ 坂井佐奈</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--night:#05071a;--star1:#fffde0;--star2:#c8d8ff;--soft:#e8e0ff;}
+html,body{background:var(--night);min-height:100vh;font-family:'Noto Serif JP',serif;overflow-x:hidden;}
+body{display:flex;flex-direction:column;align-items:center;}
+#sky{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;animation:twinkle var(--d) ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:var(--min);}to{opacity:1;transform:scale(1.5);}}
+.meteor{position:absolute;width:2px;height:80px;background:linear-gradient(to bottom,rgba(255,255,240,0),rgba(255,255,240,.85));border-radius:2px;animation:shoot var(--md) linear infinite;opacity:0;}
+@keyframes shoot{0%{opacity:0;transform:translateY(-80px) rotate(15deg);}10%{opacity:1;}40%{opacity:0;}100%{opacity:0;transform:translateY(600px) translateX(200px) rotate(15deg);}}
+#app{position:relative;z-index:1;width:100%;max-width:460px;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1.5rem 4rem;}
+.title-area{text-align:center;margin-bottom:1.8rem;animation:floatIn 1.2s ease both;}
+.title-sub{font-size:11px;letter-spacing:.35em;color:var(--star2);opacity:.7;margin-bottom:.5rem;font-family:'Shippori Mincho',serif;}
+.title-main{font-size:21px;font-weight:300;color:var(--star1);letter-spacing:.15em;line-height:1.8;font-family:'Shippori Mincho',serif;}
+.title-month{font-size:12px;color:var(--star2);letter-spacing:.25em;margin-top:.5rem;opacity:.75;font-family:'Shippori Mincho',serif;}
+@keyframes floatIn{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
+#hoshi-stage{position:relative;width:190px;height:210px;margin-bottom:1.5rem;animation:floatUp 3.5s ease-in-out infinite alternate;}
+@keyframes floatUp{from{transform:translateY(0);}to{transform:translateY(-13px);}}
+.glow-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;animation:pulseRing 3s ease-in-out infinite;pointer-events:none;}
+.glow-ring:nth-child(1){width:125px;height:125px;border:1px solid rgba(200,216,255,.2);}
+.glow-ring:nth-child(2){width:163px;height:163px;border:1px solid rgba(200,216,255,.11);animation-delay:.7s;}
+.glow-ring:nth-child(3){width:198px;height:198px;border:1px solid rgba(200,216,255,.05);animation-delay:1.4s;}
+@keyframes pulseRing{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.06);}}
+#step-select{width:100%;display:flex;flex-direction:column;align-items:center;gap:.9rem;}
+.step-label{font-size:13px;color:var(--star2);letter-spacing:.18em;opacity:.8;font-family:'Shippori Mincho',serif;}
+#sign-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;width:100%;}
+.sign-btn{background:rgba(20,24,80,.5);border:1px solid rgba(200,216,255,.18);border-radius:10px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s;}
+.sign-btn:hover{background:rgba(40,50,120,.7);border-color:rgba(200,216,255,.5);}
+.sign-btn.selected{background:rgba(60,40,120,.7);border-color:rgba(220,180,255,.7);}
+.sign-sym{font-size:18px;line-height:1;color:var(--star1);}
+.sign-name{font-size:10px;color:var(--star2);letter-spacing:.04em;font-family:'Shippori Mincho',serif;}
+#get-btn{background:transparent;border:1px solid rgba(200,216,255,.4);color:var(--soft);font-family:'Shippori Mincho',serif;font-size:15px;letter-spacing:.2em;padding:12px 2.2rem;border-radius:40px;cursor:pointer;transition:all .3s;margin-top:.3rem;}
+#get-btn:hover{border-color:rgba(200,216,255,.8);color:#fff;}
+#get-btn:active{transform:scale(.97);}
+#get-btn:disabled{opacity:.3;cursor:default;}
+#msg-card{width:100%;background:rgba(20,24,80,.6);border:1px solid rgba(200,216,255,.2);border-radius:20px;padding:1.8rem;text-align:center;display:none;backdrop-filter:blur(8px);animation:cardReveal .8s cubic-bezier(.16,1,.3,1) both;}
+@keyframes cardReveal{from{opacity:0;transform:translateY(22px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.mc-sign{font-size:28px;margin-bottom:.3rem;}
+.mc-name{font-size:13px;letter-spacing:.3em;margin-bottom:.2rem;font-family:'Shippori Mincho',serif;}
+.mc-period{font-size:11px;color:var(--star2);opacity:.55;letter-spacing:.2em;margin-bottom:1rem;font-family:'Shippori Mincho',serif;}
+.mc-divider{width:36px;height:1px;background:rgba(200,216,255,.28);margin:.9rem auto;}
+.mc-theme{font-size:12px;letter-spacing:.22em;margin-bottom:.6rem;font-family:'Shippori Mincho',serif;}
+.mc-main{font-size:16px;font-weight:400;line-height:2.1;color:var(--star1);letter-spacing:.06em;margin-bottom:.2rem;font-family:'Shippori Mincho',serif;white-space:pre-line;}
+.mc-hoshi{font-size:12px;color:var(--star2);opacity:.72;letter-spacing:.12em;line-height:2;font-family:'Shippori Mincho',serif;white-space:pre-line;}
+.mc-lucky{font-size:12px;letter-spacing:.14em;margin-top:.7rem;font-family:'Shippori Mincho',serif;opacity:.85;}
+.mc-credit{font-size:10px;color:var(--star2);opacity:.35;margin-top:1.2rem;letter-spacing:.2em;font-family:'Shippori Mincho',serif;}
+#back-btn{margin-top:1.4rem;background:transparent;border:none;color:rgba(200,216,255,.45);font-size:12px;letter-spacing:.2em;cursor:pointer;font-family:'Shippori Mincho',serif;transition:color .2s;text-decoration:underline;text-underline-offset:4px;}
+#back-btn:hover{color:rgba(200,216,255,.85);}
+.sparkle{position:fixed;border-radius:50%;animation:sparkleOut var(--st) ease-out forwards;pointer-events:none;z-index:999;}
+@keyframes sparkleOut{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0);}}
+</style>
+</head>
+<body>
+<div id="sky"></div>
+<div id="app">
+  <div class="title-area">
+    <div class="title-sub">✦ 星よみカウンセラー 坂井佐奈 ✦</div>
+    <div class="title-main">星の子からの<br>今月のメッセージ</div>
+    <div class="title-month" id="title-month"></div>
+  </div>
+
+  <div id="hoshi-stage">
+    <div class="glow-ring"></div><div class="glow-ring"></div><div class="glow-ring"></div>
+    <svg width="190" height="210" viewBox="0 0 190 210">
+      <circle cx="48" cy="168" r="2" fill="#c8d8ff" opacity=".5"><animate attributeName="opacity" values=".5;1;.3;.8;.5" dur="2.1s" repeatCount="indefinite"/></circle>
+      <circle cx="142" cy="175" r="1.5" fill="#ffc8e8" opacity=".4"><animate attributeName="opacity" values=".4;.9;.2;.7;.4" dur="1.7s" repeatCount="indefinite"/></circle>
+      <circle cx="35" cy="138" r="1.5" fill="#fffde0" opacity=".5"><animate attributeName="opacity" values=".5;.2;1;.4;.5" dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="155" cy="143" r="2" fill="#c8d8ff" opacity=".3"><animate attributeName="opacity" values=".3;.8;.4;1;.3" dur="1.9s" repeatCount="indefinite"/></circle>
+      <ellipse cx="95" cy="132" rx="36" ry="38" fill="rgba(200,216,255,0.06)"/>
+      <ellipse cx="95" cy="133" rx="25" ry="27" fill="#d0dcff"/>
+      <defs>
+        <radialGradient id="bg" cx="38%" cy="35%"><stop offset="0%" stop-color="#ffffff" stop-opacity=".7"/><stop offset="100%" stop-color="#8090d0" stop-opacity=".15"/></radialGradient>
+        <radialGradient id="fg" cx="40%" cy="35%"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#f0e8ff"/></radialGradient>
+      </defs>
+      <ellipse cx="95" cy="133" rx="25" ry="27" fill="url(#bg)" opacity=".55"/>
+      <ellipse cx="68" cy="144" rx="7.5" ry="6" fill="#d0dcff" transform="rotate(-20,68,144)"/>
+      <ellipse cx="122" cy="144" rx="7.5" ry="6" fill="#d0dcff" transform="rotate(20,122,144)"/>
+      <ellipse cx="84" cy="159" rx="6" ry="7.5" fill="#d0dcff" transform="rotate(5,84,159)"/>
+      <ellipse cx="106" cy="159" rx="6" ry="7.5" fill="#d0dcff" transform="rotate(-5,106,159)"/>
+      <ellipse cx="95" cy="129" rx="19" ry="19" fill="url(#fg)"/>
+      <path d="M77 116 Q75 106 81 100 Q87 94 95 96 Q103 94 109 100 Q115 106 113 116" fill="#b0b8e8"/>
+      <path d="M79 112 Q73 103 77 96 Q81 90 89 88" stroke="#c8d0f8" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <path d="M111 112 Q117 103 113 96 Q109 90 101 88" stroke="#c8d0f8" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <polygon points="95,79 97.1,85.3 103.6,85.3 98.4,89.1 100.4,95.4 95,91.8 89.6,95.4 91.6,89.1 86.4,85.3 92.9,85.3" fill="#f0d080"/>
+      <polygon points="95,79 97.1,85.3 103.6,85.3 98.4,89.1 100.4,95.4 95,91.8 89.6,95.4 91.6,89.1 86.4,85.3 92.9,85.3" fill="#fff8c0" opacity=".5"><animate attributeName="opacity" values=".5;1;.3;.8;.5" dur="1.6s" repeatCount="indefinite"/></polygon>
+      <ellipse cx="88" cy="128" rx="3.8" ry="4.3" fill="#fff"/>
+      <ellipse cx="88" cy="128.4" rx="2.6" ry="3.1" fill="#5060c0"/>
+      <ellipse cx="88" cy="128.4" rx="1.5" ry="1.8" fill="#2030a0"/>
+      <circle cx="89.1" cy="127.2" r=".95" fill="#fff"/>
+      <ellipse cx="102" cy="128" rx="3.8" ry="4.3" fill="#fff"/>
+      <ellipse cx="102" cy="128.4" rx="2.6" ry="3.1" fill="#5060c0"/>
+      <ellipse cx="102" cy="128.4" rx="1.5" ry="1.8" fill="#2030a0"/>
+      <circle cx="103.1" cy="127.2" r=".95" fill="#fff"/>
+      <path d="M84.5 124 Q88 122 91 123.5" stroke="#4050b0" stroke-width=".8" fill="none"/>
+      <path d="M99 123.5 Q102 122 105.5 124" stroke="#4050b0" stroke-width=".8" fill="none"/>
+      <path d="M85 122.5 Q88 120.5 91 122" stroke="#8090d0" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      <path d="M99 122 Q102 120.5 105 122.5" stroke="#8090d0" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      <ellipse cx="82" cy="133" rx="4.2" ry="2.6" fill="#ffc0d8" opacity=".42"/>
+      <ellipse cx="108" cy="133" rx="4.2" ry="2.6" fill="#ffc0d8" opacity=".42"/>
+      <path d="M91 138 Q95 141 99 138" stroke="#b090c0" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <circle cx="72" cy="120" r="2" fill="#fffde0" opacity=".7"><animate attributeName="opacity" values=".7;.2;1;.5;.7" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="118" cy="117" r="1.7" fill="#ffc8e8" opacity=".6"><animate attributeName="opacity" values=".6;1;.3;.8;.6" dur="2.2s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+
+  <div id="step-select">
+    <div class="step-label">✦ あなたの星座を選んでください ✦</div>
+    <div id="sign-grid"></div>
+    <button id="get-btn" disabled>✦ 今月のメッセージを受け取る</button>
+  </div>
+
+  <div id="msg-card">
+    <div class="mc-sign" id="mc-sign"></div>
+    <div class="mc-name" id="mc-name"></div>
+    <div class="mc-period" id="mc-period"></div>
+    <div class="mc-divider"></div>
+    <div class="mc-theme" id="mc-theme"></div>
+    <div class="mc-main" id="mc-main"></div>
+    <div class="mc-divider"></div>
+    <div class="mc-hoshi" id="mc-hoshi"></div>
+    <div class="mc-lucky" id="mc-lucky"></div>
+    <div class="mc-credit">✦ 星よみカウンセラー 坂井佐奈 ✦</div>
+    <button id="back-btn">← 星座を選び直す</button>
+  </div>
+</div>
+
+<script>
+// 12星座 × 12ヶ月 = 144パターン
+// messages[星座index][月index(0=1月)]
+const signs=[
+  {sym:"♈",name:"牡羊座",en:"ARIES",color:"#ffb0a0"},
+  {sym:"♉",name:"牡牛座",en:"TAURUS",color:"#a8d8a0"},
+  {sym:"♊",name:"双子座",en:"GEMINI",color:"#ffe090"},
+  {sym:"♋",name:"蟹座",en:"CANCER",color:"#c0d8ff"},
+  {sym:"♌",name:"獅子座",en:"LEO",color:"#ffd070"},
+  {sym:"♍",name:"乙女座",en:"VIRGO",color:"#b8e8c0"},
+  {sym:"♎",name:"天秤座",en:"LIBRA",color:"#e8c8ff"},
+  {sym:"♏",name:"蠍座",en:"SCORPIO",color:"#d0a0e0"},
+  {sym:"♐",name:"射手座",en:"SAGITTARIUS",color:"#ffe8a0"},
+  {sym:"♑",name:"山羊座",en:"CAPRICORN",color:"#b0c8e0"},
+  {sym:"♒",name:"水瓶座",en:"AQUARIUS",color:"#a0d8f0"},
+  {sym:"♓",name:"魚座",en:"PISCES",color:"#c0d0ff"},
+];
+
+// [星座][月] の順で格納
+const messages=[
+  // 0: 牡羊座
+  [
+    {theme:"✦ 新しい炎を宿して",main:"冬の静けさの中で\nあなたの内側に炎が灯り始めています。\nまだ小さくていい。それが始まりです。",hoshi:"牡羊座の星が芽吹きの予感を届けています。\n今月は内側の声を大切にして。",lucky:"✦ ラッキーカラー：深紅　✦ キーワード：準備"},
+    {theme:"✦ 愛を行動で示す",main:"想っているだけでは伝わらないことがあります。\n今月は小さくてもいい、\n行動という形で愛を届けてみて。",hoshi:"火の星があなたの勇気を後押しします。\n動いた先に答えが待っています。",lucky:"✦ ラッキーカラー：赤　✦ キーワード：行動"},
+    {theme:"✦ あなたの春が来た",main:"待ち望んでいた季節がやってきました。\n迷いを手放して、\n思い切り新しい一歩を踏み出して。",hoshi:"春分の光が牡羊座を輝かせています。\n今月は何を始めても吉。",lucky:"✦ ラッキーカラー：オレンジ　✦ キーワード：スタート"},
+    {theme:"✦ 情熱を信じて",main:"あなたが燃えるように感じることは\n宇宙があなたに与えた使命のかけらです。\n今月はその情熱をそのまま生きて。",hoshi:"牡羊の星が全力で輝いています。\n遠慮は不要、あなたらしく。",lucky:"✦ ラッキーカラー：真っ赤　✦ キーワード：情熱"},
+    {theme:"✦ 休むことも勇気",main:"走り続けてきたあなたへ。\n立ち止まることは後退ではありません。\n充電した分だけ、さらに遠くへ行けます。",hoshi:"星があなたにそっと休息を勧めています。\n今月は自分を満たすことを優先して。",lucky:"✦ ラッキーカラー：サーモンピンク　✦ キーワード：休息"},
+    {theme:"✦ 直感が道を示す",main:"論理を超えたところに\nあなたの答えがあります。\n今月は感じるままに動いてみて。",hoshi:"夏の星があなたの直感を磨いています。\n理屈より感覚を信じる月です。",lucky:"✦ ラッキーカラー：コーラル　✦ キーワード：直感"},
+    {theme:"✦ 関係が深まる月",main:"誰かとの絆が\nより深いところで結ばれようとしています。\n素直な気持ちを言葉にしてみて。",hoshi:"牡羊座に縁の星が輝いています。\n今月は人との繋がりが財産になります。",lucky:"✦ ラッキーカラー：ローズ　✦ キーワード：絆"},
+    {theme:"✦ 新しい自分に会う",main:"今月のあなたは\n少し前とは違う自分に気づくはずです。\nその変化を怖がらず、楽しんで。",hoshi:"変容の星があなたの成長を照らしています。\n脱皮する準備ができています。",lucky:"✦ ラッキーカラー：ディープレッド　✦ キーワード：変容"},
+    {theme:"✦ 遠くへ羽ばたいて",main:"今月は視野を広げるチャンスです。\n新しい世界への好奇心に\n素直に従ってみてください。",hoshi:"旅と学びの星があなたを導いています。\n行ったことのない場所へ。",lucky:"✦ ラッキーカラー：オレンジ　✦ キーワード：挑戦"},
+    {theme:"✦ 土台を固める",main:"積み重ねることの美しさを\n今月は感じられるはずです。\n地道な一歩が未来の礎になります。",hoshi:"実りの星があなたの努力を認めています。\n焦らず着実に進む月です。",lucky:"✦ ラッキーカラー：バーガンディ　✦ キーワード：実直"},
+    {theme:"✦ 感謝が運を開く",main:"今月は「ありがとう」を\n声に出してみてください。\n感謝の言葉が新しい縁を引き寄せます。",hoshi:"縁の星があなたの周りで輝いています。\n感謝の循環が始まる月です。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：感謝"},
+    {theme:"✦ 年の終わりに輝く",main:"一年を走り抜けてきたあなたへ。\n今月はゆっくりと振り返り\nどれほど成長したかを感じてみて。",hoshi:"牡羊座の星が一年の集大成を讃えています。\n自分をいたわる月にして。",lucky:"✦ ラッキーカラー：深紅　✦ キーワード：完結"},
+  ],
+  // 1: 牡牛座
+  [
+    {theme:"✦ 豊かさの種を蒔く",main:"今月蒔いた種は\n必ず豊かな実りをもたらします。\n焦らず、丁寧に過ごしてください。",hoshi:"牡牛座の星が豊穣を約束しています。\n地に足のついた行動が吉。",lucky:"✦ ラッキーカラー：アイボリー　✦ キーワード：準備"},
+    {theme:"✦ 五感を喜ばせて",main:"今月は美しいもの、\n美味しいもの、心地よいものを\n意識的に取り入れてみて。",hoshi:"金星があなたの感性を磨いています。\n豊かさを受け取る準備ができています。",lucky:"✦ ラッキーカラー：ピスタチオ　✦ キーワード：感性"},
+    {theme:"✦ 自分を信頼して",main:"あなたが積み上げてきた経験は\n確かにあなたの力になっています。\n今月はその力を信じて進んで。",hoshi:"大地の星があなたの足元を固めています。\n自信を持って一歩前へ。",lucky:"✦ ラッキーカラー：グリーン　✦ キーワード：信頼"},
+    {theme:"✦ 喜びを素直に表して",main:"嬉しいとき、素直に喜んでいいのです。\n感情を表現することで\nさらなる喜びが引き寄せられます。",hoshi:"春の星があなたの感情を解放しています。\n今月は喜びを遠慮なく。",lucky:"✦ ラッキーカラー：ミントグリーン　✦ キーワード：喜び"},
+    {theme:"✦ 自分のペースが最強",main:"誰かのペースに合わせる必要はありません。\nあなたがいちばん力を発揮できるリズムで\n今月も歩んでいきましょう。",hoshi:"牡牛の星があなたのペースを守っています。\n焦りを手放す月です。",lucky:"✦ ラッキーカラー：サルビア　✦ キーワード：自己軸"},
+    {theme:"✦ 受け取ることを許す",main:"与えることが得意なあなたへ。\n今月は誰かからの愛を\n素直に受け取ってみてください。",hoshi:"金星があなたの心を開こうとしています。\n受け取る勇気を持って。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：受容"},
+    {theme:"✦ 根を張り、花を咲かせる",main:"あなたが静かに育ててきたものが\n今月花を咲かせようとしています。\n誰かに見せることを恐れないで。",hoshi:"牡牛座に表現の星が輝いています。\n今月は自分を披露する月です。",lucky:"✦ ラッキーカラー：コーラル　✦ キーワード：開花"},
+    {theme:"✦ 変化の波に乗って",main:"いつもとは違う流れが来ています。\n抵抗せず、この変化を\n豊かさへの入口として迎えてみて。",hoshi:"変化の星があなたに新風を送っています。\n柔軟さが幸運を呼ぶ月。",lucky:"✦ ラッキーカラー：アクア　✦ キーワード：柔軟"},
+    {theme:"✦ 豊かさを分かち合う",main:"今月のあなたの笑顔は\n周りの人を温かくします。\n持っているものを惜しみなく分けて。",hoshi:"実りの星があなたに満ちています。\n分かち合いが倍になって返ってきます。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：分かち合い"},
+    {theme:"✦ 安定の中に宝がある",main:"変わらず続けてきたことの中に\n本当の宝が眠っています。\n今月は日常を大切に見つめ直して。",hoshi:"土星があなたの継続を讃えています。\n普通の日の美しさに気づく月。",lucky:"✦ ラッキーカラー：ブラウン　✦ キーワード：継続"},
+    {theme:"✦ 心地よさを選んで",main:"今月は何を選ぶときも\n「これが心地いい」という感覚を\n基準にしてみてください。",hoshi:"金星があなたの感覚を信頼しています。\n心地よさが正解の月です。",lucky:"✦ ラッキーカラー：ラベンダー　✦ キーワード：感覚"},
+    {theme:"✦ 一年の収穫を喜ぶ",main:"今年のあなたが受け取った豊かさを\nゆっくり数えてみてください。\n気づいていないギフトがたくさんあるはずです。",hoshi:"牡牛座の実りの星が一年を照らしています。\n感謝で月を締めくくって。",lucky:"✦ ラッキーカラー：ディープグリーン　✦ キーワード：収穫"},
+  ],
+  // 2: 双子座
+  [
+    {theme:"✦ 言葉に力が宿る月",main:"今月あなたが発する言葉には\n特別な力があります。\n伝えたかったことを、今こそ届けて。",hoshi:"水星があなたの言葉を輝かせています。\nコミュニケーションが鍵の月。",lucky:"✦ ラッキーカラー：イエロー　✦ キーワード：伝達"},
+    {theme:"✦ 好奇心が道を開く",main:"気になっていることに\n素直に近づいてみてください。\nその好奇心の先に新しい世界があります。",hoshi:"水星があなたの知性を刺激しています。\n学ぶことがすべてプラスになる月。",lucky:"✦ ラッキーカラー：水色　✦ キーワード：探求"},
+    {theme:"✦ 変化を楽しんで",main:"同じ場所にいることが\n窮屈に感じるなら、それはサインです。\n今月は新しい風を取り込んで。",hoshi:"風の星があなたに変化を促しています。\n動くことで運気が上がる月。",lucky:"✦ ラッキーカラー：ライトブルー　✦ キーワード：変化"},
+    {theme:"✦ 出会いが宝になる",main:"今月の出会いを\n大切にしてみてください。\n思わぬご縁が人生を彩ります。",hoshi:"縁の星があなたの周りで輝いています。\n人との繋がりを丁寧に育てて。",lucky:"✦ ラッキーカラー：コーラルピンク　✦ キーワード：縁"},
+    {theme:"✦ 二つの自分を愛して",main:"時に揺れ動くあなたの心は\n弱さではなく、豊かさの証です。\n両方の自分をまるごと愛してあげて。",hoshi:"双子の星があなたの多面性を祝福しています。\n矛盾も含めて、それがあなたです。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：統合"},
+    {theme:"✦ 伝える勇気を持って",main:"心の中にあることを\n言葉にすることを恐れないでください。\n正直な言葉が最高の贈り物になります。",hoshi:"夏の水星があなたの表現を後押しします。\n伝えることで道が開ける月。",lucky:"✦ ラッキーカラー：ミント　✦ キーワード：誠実"},
+    {theme:"✦ 知識が力になる",main:"今月は学ぶことに\n積極的になってみてください。\n得た知識が未来の自分を助けます。",hoshi:"水星があなたの学びを加速させています。\nインプットが宝になる月。",lucky:"✦ ラッキーカラー：スカイブルー　✦ キーワード：学び"},
+    {theme:"✦ 橋渡し役があなたの使命",main:"あなたには人と人をつなぐ\n特別な才能があります。\n今月はその力を惜しみなく使って。",hoshi:"双子座に橋渡しの星が輝いています。\n繋げることで自分も満たされる月。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：繋ぐ"},
+    {theme:"✦ 自由に翔んでいい",main:"誰かの期待に縛られなくていいのです。\n今月のあなたはもっと自由に\n好きな方向へ飛んでいいのです。",hoshi:"風の星があなたに自由を許しています。\n軽やかに動く月です。",lucky:"✦ ラッキーカラー：スカイ　✦ キーワード：自由"},
+    {theme:"✦ 深く話す時間を",main:"表面的な会話ではなく\n今月は誰かと深く話してみて。\nその対話があなたを変えるかもしれません。",hoshi:"水星が深い対話を促しています。\n本音を話せる場所を大切に。",lucky:"✦ ラッキーカラー：ネイビー　✦ キーワード：対話"},
+    {theme:"✦ アイデアを形にして",main:"頭の中に浮かんでいるアイデアを\n今月は形にしてみてください。\n思っているより早く動き出せます。",hoshi:"双子座に創造の星が輝いています。\nアイデアが現実になる月。",lucky:"✦ ラッキーカラー：シルバー　✦ キーワード：創造"},
+    {theme:"✦ 笑顔が最高の贈り物",main:"今月のあなたの笑顔は\n周りの人に光を届けます。\n笑顔でいることが、今月の使命です。",hoshi:"水星が喜びのエネルギーを届けています。\n明るさで年末を彩って。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：喜び"},
+  ],
+  // 3: 蟹座
+  [
+    {theme:"✦ 内なる声を聴いて",main:"外の世界の音より\n自分の内側の声に\n今月は耳を傾けてみてください。",hoshi:"月があなたの内側を照らしています。\n感じることを信頼する月です。",lucky:"✦ ラッキーカラー：シルバー　✦ キーワード：内省"},
+    {theme:"✦ 家族や仲間を抱きしめて",main:"大切な人のそばにいることで\nあなた自身も満たされます。\n今月は愛する人との時間を大切に。",hoshi:"月の女神があなたの絆を守っています。\n温かい繋がりが力の源です。",lucky:"✦ ラッキーカラー：ホワイト　✦ キーワード：絆"},
+    {theme:"✦ 殻を破る準備ができた",main:"ずっと温めてきたものを\n今月は外に出してみてください。\n準備はもう十分できています。",hoshi:"春の月があなたの殻を優しく割ります。\n生まれ変わるタイミングが来ています。",lucky:"✦ ラッキーカラー：パールホワイト　✦ キーワード：誕生"},
+    {theme:"✦ 優しさが世界を変える",main:"あなたの繊細な優しさは\n世界には絶対に必要なものです。\n今月もその優しさを、どうか惜しまないで。",hoshi:"蟹座の月が慈愛を届けています。\n与える愛が豊かさになって返ります。",lucky:"✦ ラッキーカラー：ラベンダー　✦ キーワード：慈愛"},
+    {theme:"✦ 自分も守ってあげて",main:"誰かを守ることが得意なあなた。\n今月は自分自身も\n同じように守ってあげてください。",hoshi:"月があなた自身を照らしています。\n自分を最優先にしていい月です。",lucky:"✦ ラッキーカラー：クリーム　✦ キーワード：自愛"},
+    {theme:"✦ 感受性が才能になる",main:"感じすぎてしまうことは\n弱さではなく、あなたの特別な才能です。\nその繊細さを誰かのために使って。",hoshi:"夏の月があなたの感性を輝かせています。\n受け取る力が最大限の月。",lucky:"✦ ラッキーカラー：シーフォーム　✦ キーワード：感性"},
+    {theme:"✦ 安心できる場所を作る",main:"今月は自分だけの\n安らぎの場所を作ってみて。\n充電できる環境が未来の力になります。",hoshi:"蟹の星があなたのホームを守っています。\n心地いい空間が運気を上げる月。",lucky:"✦ ラッキーカラー：ムーンストーン　✦ キーワード：安心"},
+    {theme:"✦ 過去を浄化する月",main:"手放せずにいたものを\n今月は丁寧に手放してみてください。\n軽くなった分だけ、前へ進めます。",hoshi:"月が浄化のエネルギーを送っています。\n手放しが大きな解放になる月。",lucky:"✦ ラッキーカラー：パープル　✦ キーワード：手放し"},
+    {theme:"✦ 直感があなたを導く",main:"今月は論理より直感を信じてみて。\n蟹座の鋭い感性が\n正しい道を教えてくれます。",hoshi:"月があなたの第六感を磨いています。\n感じたことをそのまま行動に。",lucky:"✦ ラッキーカラー：シルバー　✦ キーワード：直感"},
+    {theme:"✦ 温かさで満たされる",main:"今月は誰かのために料理したり\n温かい言葉をかけてみたりして。\nその行為があなた自身も温めます。",hoshi:"蟹の星があなたの愛情表現を応援しています。\n与えることで満たされる月。",lucky:"✦ ラッキーカラー：オレンジ　✦ キーワード：温もり"},
+    {theme:"✦ 感謝の貯金を増やす",main:"今月は毎晩寝る前に\n一つだけ感謝を見つけてみて。\n小さな感謝が大きな幸せを呼びます。",hoshi:"月があなたの感謝を星に届けています。\n感謝日記が運気を変える月。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：感謝"},
+    {theme:"✦ 一年の愛を振り返る",main:"今年誰かのためにした\n愛のある行動を思い出してみて。\nあなたはこんなに愛を届けてきたのです。",hoshi:"蟹座の月が一年の愛を照らしています。\n自分の優しさを誇りに思って。",lucky:"✦ ラッキーカラー：ムーンシルバー　✦ キーワード：愛"},
+  ],
+  // 4: 獅子座
+  [
+    {theme:"✦ 光を内側に灯す",main:"まだ寒い季節でも\nあなたの内側には太陽があります。\n今月はその光を少し外に漏らしてみて。",hoshi:"獅子座の太陽が内から輝いています。\n自信のかけらを持って歩いて。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：自信"},
+    {theme:"✦ 愛される価値がある",main:"あなたは愛される価値がある存在です。\n今月はそのことを\n自分に言い聞かせながら過ごして。",hoshi:"太陽があなたの価値を照らしています。\n自己肯定感が上がる月。",lucky:"✦ ラッキーカラー：サンゴールド　✦ キーワード：自愛"},
+    {theme:"✦ ステージに立つとき",main:"今月のあなたは\n誰かに何かを届けることができます。\n舞台の上に立つ勇気を持って。",hoshi:"春の太陽があなたを後押しします。\n表現することで世界が変わる月。",lucky:"✦ ラッキーカラー：オレンジ　✦ キーワード：表現"},
+    {theme:"✦ 輝きを分かち合う",main:"あなたが輝くことで\n周りの人も輝き出します。\n今月は遠慮せずに輝いてください。",hoshi:"獅子の太陽が全力で輝いています。\nあなたの光が連鎖する月です。",lucky:"✦ ラッキーカラー：イエローゴールド　✦ キーワード：輝き"},
+    {theme:"✦ 創造性が爆発する",main:"今月のあなたには\n特別な創造のエネルギーが宿っています。\n作ること、表現することに全力で。",hoshi:"太陽と創造の星が重なっています。\n今月作ったものはずっと残ります。",lucky:"✦ ラッキーカラー：バーントオレンジ　✦ キーワード：創造"},
+    {theme:"✦ 堂々と生きる",main:"誰に何と思われようと\nあなたはあなたらしく生きていいのです。\n今月はその確信を胸に。",hoshi:"夏の太陽があなたに王者の風格を与えます。\n堂々とした振る舞いが道を開く月。",lucky:"✦ ラッキーカラー：ロイヤルゴールド　✦ キーワード：威厳"},
+    {theme:"✦ 愛のリーダーシップ",main:"あなたが前に立つことで\n周りの人が安心します。\n今月は愛ある姿勢でリードしてみて。",hoshi:"獅子座にリーダーシップの星が輝いています。\n率いることであなたも成長する月。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：リード"},
+    {theme:"✦ 遊ぶことを許して",main:"真剣にやることも大事だけれど\n今月は思い切り遊んでみて。\n遊びの中に次のヒントがあります。",hoshi:"太陽が遊びのエネルギーを届けています。\n楽しむことが最高の投資の月。",lucky:"✦ ラッキーカラー：サニーイエロー　✦ キーワード：遊び"},
+    {theme:"✦ 情熱の火を保つ",main:"少し疲れを感じていても\nあなたの情熱の火は消えていません。\n今月はその火を静かに守ってあげて。",hoshi:"獅子の星があなたの情熱を守っています。\n無理せず、でも前を向く月。",lucky:"✦ ラッキーカラー：アンバー　✦ キーワード：情熱"},
+    {theme:"✦ 誰かの光になる",main:"今月あなたの言葉や行動が\n誰かの暗闇を照らすことがあります。\n惜しみなく、あなたの光を届けて。",hoshi:"太陽が奉仕のエネルギーを注いでいます。\n与えることで自分も輝く月。",lucky:"✦ ラッキーカラー：サンシャイン　✦ キーワード：奉仕"},
+    {theme:"✦ 個性が最大の武器",main:"あなたにしかできないことがあります。\n今月はその唯一無二の個性を\n思い切り発揮してみてください。",hoshi:"獅子座に個性の星が輝いています。\n自分らしさを武器にする月。",lucky:"✦ ラッキーカラー：ロイヤルオレンジ　✦ キーワード：個性"},
+    {theme:"✦ 一年の輝きを讃える",main:"今年あなたが輝いた瞬間を\nいくつか思い出してみて。\nそのすべてがあなたの財産です。",hoshi:"太陽が一年の輝きを照らしています。\n自分を讃えることから始めて。",lucky:"✦ ラッキーカラー：ゴールデン　✦ キーワード：讃える"},
+  ],
+  // 5: 乙女座
+  [
+    {theme:"✦ 丁寧さが力になる",main:"細やかな気遣いができるあなたは\n今月その才能をフルに活かせます。\n丁寧に積み重ねた先に宝があります。",hoshi:"乙女座の星が精緻な働きを応援しています。\n地道さが輝く月です。",lucky:"✦ ラッキーカラー：セージグリーン　✦ キーワード：丁寧"},
+    {theme:"✦ 手放せば整う",main:"必要のないものを手放すと\nスペースができて\n新しいものが入ってきます。",hoshi:"水星が浄化を促しています。\n断捨離が幸運を呼ぶ月です。",lucky:"✦ ラッキーカラー：ベージュ　✦ キーワード：浄化"},
+    {theme:"✦ 春の始まりに整える",main:"新しい季節の前に\n環境を整えてみてください。\n整った空間が整った思考を生みます。",hoshi:"春分の乙女の星が整理を後押しします。\n環境を変えることで運気が変わる月。",lucky:"✦ ラッキーカラー：スプリンググリーン　✦ キーワード：整える"},
+    {theme:"✦ 完璧よりも前進",main:"完璧を求めすぎて\n立ち止まっていませんか。\n今月は70点でいいので、前へ進んで。",hoshi:"乙女の星が完璧主義を優しく緩めています。\n動くことで答えが見える月。",lucky:"✦ ラッキーカラー：フレッシュグリーン　✦ キーワード：前進"},
+    {theme:"✦ 自分の体を愛でる",main:"いつも誰かのために動いているあなた。\n今月は自分の体を丁寧に労って\nマッサージやゆっくりしたお風呂を。",hoshi:"乙女の星があなたの健康を守っています。\n体を整えることが運気を整える月。",lucky:"✦ ラッキーカラー：ナチュラルベージュ　✦ キーワード：健康"},
+    {theme:"✦ 細部に宿る美しさ",main:"誰も気づかないような小さなことに\nあなたは気づけます。\nその感性を今月は思い切り表現して。",hoshi:"夏の乙女の星があなたの感性を輝かせています。\n細部への愛が花開く月。",lucky:"✦ ラッキーカラー：ミントグリーン　✦ キーワード：美意識"},
+    {theme:"✦ 助ける喜びを感じて",main:"誰かの役に立てたとき\nあなたは特別な満足感を感じます。\n今月はその才能を積極的に使って。",hoshi:"乙女座に奉仕の星が輝いています。\n助けることで自分が豊かになる月。",lucky:"✦ ラッキーカラー：オリーブ　✦ キーワード：奉仕"},
+    {theme:"✦ 分析より感じることを",main:"頭で考えすぎていませんか。\n今月は少しだけ分析を止めて\n感じるままに動いてみて。",hoshi:"乙女の星が直感を解放しようとしています。\n右脳を使う月です。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：感覚"},
+    {theme:"✦ 学びが実を結ぶ",main:"これまで積み重ねてきた学びが\n今月花開こうとしています。\n知識を誰かのために使ってみて。",hoshi:"乙女座に実りの星が輝いています。\n学びを活かす絶好の月。",lucky:"✦ ラッキーカラー：ダークグリーン　✦ キーワード：実践"},
+    {theme:"✦ これで十分",main:"今のあなたで十分です。\n今月は自分に合格点を出して\n胸を張って生きてください。",hoshi:"乙女の星があなたの努力を認めています。\n自分を認める言葉をかけ続けて。",lucky:"✦ ラッキーカラー：アースブラウン　✦ キーワード：自己承認"},
+    {theme:"✦ 感謝リストを作る",main:"今月は紙に\n感謝することを書き出してみて。\n書き終えたとき、心が軽くなります。",hoshi:"乙女の星が感謝の力を後押しします。\n書くことで引き寄せが始まる月。",lucky:"✦ ラッキーカラー：ラベンダー　✦ キーワード：感謝"},
+    {theme:"✦ 一年の丁寧さを誇って",main:"今年あなたが丁寧に積み重ねてきたことは\n必ず来年の自分を助けます。\n地道さを誇りに思ってください。",hoshi:"乙女の星が一年の努力を讃えています。\n継続の美しさを感じる月。",lucky:"✦ ラッキーカラー：セージ　✦ キーワード：継続"},
+  ],
+  // 6: 天秤座
+  [
+    {theme:"✦ バランスを整える",main:"今月は自分の中の\nアンバランスなところに気づき\n少しずつ整えていく月です。",hoshi:"天秤の星が調和を取り戻そうとしています。\n内側を整えることから始めて。",lucky:"✦ ラッキーカラー：ローズ　✦ キーワード：調和"},
+    {theme:"✦ 美しいものに触れて",main:"美しい音楽、素敵な景色、好きな香り。\n今月は意識的に\n美しいものを取り入れてみて。",hoshi:"金星があなたの美意識を磨いています。\n美が運気を高める月です。",lucky:"✦ ラッキーカラー：ピンク　✦ キーワード：美"},
+    {theme:"✦ 関係の春が来た",main:"今月は人間関係に\n新しい風が吹き込んできます。\n新しい出会いを歓迎してみて。",hoshi:"金星が縁を引き寄せています。\n出会いと再会が重なる月。",lucky:"✦ ラッキーカラー：コーラルピンク　✦ キーワード：出会い"},
+    {theme:"✦ 自分軸で選ぶ",main:"誰かに合わせてばかりいませんか。\n今月は少しだけ\n自分の気持ちを最優先にして。",hoshi:"天秤の星が自分軸を呼び戻しています。\n自分を大切にすることが鍵の月。",lucky:"✦ ラッキーカラー：ベリーピンク　✦ キーワード：自己軸"},
+    {theme:"✦ 与えと受け取りのリズム",main:"与えることばかりに偏っていませんか。\n今月は受け取ることにも\n意識を向けてみてください。",hoshi:"金星があなたに受容を促しています。\n受け取ることで循環が生まれる月。",lucky:"✦ ラッキーカラー：ローズクォーツ　✦ キーワード：受容"},
+    {theme:"✦ 対話が宝になる",main:"今月は誰かと深く話してみてください。\n本音の対話の中に\nあなたが求めていた答えがあります。",hoshi:"夏の金星があなたの対話を後押しします。\n言葉を交わすことで道が開く月。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：対話"},
+    {theme:"✦ 決断の月",main:"ずっと迷っていたことを\n今月は決めてみてください。\nどちらを選んでも、それが正解です。",hoshi:"天秤の星があなたに決断を促しています。\n選んだ先に新しい世界があります。",lucky:"✦ ラッキーカラー：ライトパープル　✦ キーワード：決断"},
+    {theme:"✦ 協力し合う喜び",main:"一人でできることより\n誰かと協力してできることの方が\n今月はずっと大きな結果を生みます。",hoshi:"天秤座に協調の星が輝いています。\n「一緒に」が合言葉の月。",lucky:"✦ ラッキーカラー：シルバー　✦ キーワード：協力"},
+    {theme:"✦ 美意識を仕事に活かす",main:"あなたの美意識と調和の感覚は\n仕事でも才能になります。\n今月はその感性を思い切り発揮して。",hoshi:"天秤の星がクリエイティブを後押しします。\n美の才能が評価される月。",lucky:"✦ ラッキーカラー：ローズゴールド　✦ キーワード：美の才能"},
+    {theme:"✦ 愛の形を見つめ直す",main:"愛するとはどういうことか\n今月は静かに考えてみてください。\nその問いがあなたを深くします。",hoshi:"金星が愛の本質を問いかけています。\n愛について深める月です。",lucky:"✦ ラッキーカラー：ディープロース　✦ キーワード：愛"},
+    {theme:"✦ 調和が幸運を呼ぶ",main:"争わず、でも自分を曲げずに。\n今月は天秤のように\nしなやかにバランスを保って。",hoshi:"天秤の星が調和の力を授けています。\nしなやかさが運気を高める月。",lucky:"✦ ラッキーカラー：パールホワイト　✦ キーワード：しなやか"},
+    {theme:"✦ 愛を循環させて締めくくる",main:"今年たくさんの縁に支えられました。\n感謝の気持ちを言葉や行動で\n今月届けてみてください。",hoshi:"金星が感謝の循環を後押しします。\n愛で一年を締めくくる月。",lucky:"✦ ラッキーカラー：シャンパンゴールド　✦ キーワード：感謝"},
+  ],
+  // 7: 蠍座
+  [
+    {theme:"✦ 深部から再生が始まる",main:"今月のあなたは\n表面ではなく深いところから\n新しい自分が生まれようとしています。",hoshi:"冥王星があなたの再生を促しています。\n変容の予感を感じる月。",lucky:"✦ ラッキーカラー：ディープバーガンディ　✦ キーワード：再生"},
+    {theme:"✦ 感じる力が最大に",main:"今月のあなたの感受性は\n最大限に開いています。\nその感覚を恐れず、信じてみて。",hoshi:"蠍の星があなたの直感を研ぎ澄ませています。\n感じたことをそのまま信じる月。",lucky:"✦ ラッキーカラー：ワインレッド　✦ キーワード：直感"},
+    {theme:"✦ 執着を手放す春",main:"手放せずにいたものを\n今月は意識して解放してみて。\n春の風が古いものを運び去ります。",hoshi:"冥王星が手放しを後押しします。\n解放した分だけ新しいものが来る月。",lucky:"✦ ラッキーカラー：パープル　✦ キーワード：解放"},
+    {theme:"✦ 深い愛を表現する",main:"あなたの愛は深くて本物。\n今月はその深い愛を\n言葉や行動で表してみてください。",hoshi:"蠍の星が愛の表現を促しています。\n深く愛することで応えが来る月。",lucky:"✦ ラッキーカラー：クリムゾン　✦ キーワード：深愛"},
+    {theme:"✦ 変容を楽しむ",main:"蠍座のあなたは\n何度でも生まれ変われます。\n今月の変化を怖がらずに。",hoshi:"冥王星があなたの変容を見守っています。\n古い自分を脱ぎ捨てる月。",lucky:"✦ ラッキーカラー：ディープパープル　✦ キーワード：変容"},
+    {theme:"✦ 洞察力が輝く",main:"今月のあなたは\n物事の本質を見抜く力が特に鋭くなっています。\nその洞察力を大切な判断に使って。",hoshi:"夏の蠍の星が洞察を後押しします。\n見えないものが見える月。",lucky:"✦ ラッキーカラー：ブラックオパール　✦ キーワード：洞察"},
+    {theme:"✦ 秘密の力を解放する",main:"まだ誰にも話していない\nあなたの想いや夢があるなら\n今月少しだけ外に出してみて。",hoshi:"蠍の星が秘めた力を解放しようとしています。\n内なる力が花開く月。",lucky:"✦ ラッキーカラー：マゼンタ　✦ キーワード：解放"},
+    {theme:"✦ 信頼できる人と深く",main:"表面的な付き合いではなく\n今月は本当に信頼できる人と\n深く繋がってみて。",hoshi:"蠍の星が深い縁を引き寄せています。\n魂レベルで繋がる出会いの月。",lucky:"✦ ラッキーカラー：ネイビー　✦ キーワード：深縁"},
+    {theme:"✦ 闇の先の光を信じて",main:"今感じている重さは\n必ず変わります。\n闇の深さはその後の光の明るさです。",hoshi:"蠍の星が光の先を照らしています。\n信じることで道が開ける月。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：信念"},
+    {theme:"✦ 直感で選んでいい",main:"情報が多くて迷う時は\nすべてを手放して\n最初の直感を信じてみて。",hoshi:"冥王星があなたの直感を磨いています。\n感じたことが正解の月。",lucky:"✦ ラッキーカラー：ディープレッド　✦ キーワード：直感"},
+    {theme:"✦ 情熱の炎を守る",main:"年末に向かって疲れを感じていても\nあなたの情熱の炎は消えていません。\nその火を静かに守ってあげて。",hoshi:"蠍の星があなたの情熱を守っています。\n内なる炎を信じる月。",lucky:"✦ ラッキーカラー：バーミリオン　✦ キーワード：情熱"},
+    {theme:"✦ 一年の深さを讃える",main:"今年のあなたが感じたこと、\n乗り越えたことの深さは\n特別な魂の財産です。",hoshi:"冥王星が一年の成長を照らしています。\n深く生きた自分を誇って。",lucky:"✦ ラッキーカラー：ディープパープル　✦ キーワード：深さ"},
+  ],
+  // 8: 射手座
+  [
+    {theme:"✦ 遠くを見て歩く",main:"足元ばかり見ていませんか。\n今月は少し顔を上げて\n遠くにある夢を見てみてください。",hoshi:"木星があなたの視野を広げています。\n大きな夢を描く月です。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：展望"},
+    {theme:"✦ 自由が一番の栄養",main:"窮屈さを感じているなら\nそれはあなたの魂のサインです。\n今月はもっと自由に動いてみて。",hoshi:"射手の星があなたに自由を促しています。\n制限を外すことで運気が上がる月。",lucky:"✦ ラッキーカラー：スカイブルー　✦ キーワード：自由"},
+    {theme:"✦ 新しい世界へ飛び込む",main:"今月は未知の領域へ\n一歩踏み込んでみてください。\n冒険の先に本物の宝があります。",hoshi:"春の木星があなたの冒険を後押しします。\n新しい世界が扉を開けています。",lucky:"✦ ラッキーカラー：エメラルド　✦ キーワード：冒険"},
+    {theme:"✦ 学びが翼になる",main:"今月インプットしたことは\n必ずあなたの翼になります。\n好奇心の赴くままに学んで。",hoshi:"木星が知識と成長を約束しています。\n学ぶことが武器になる月。",lucky:"✦ ラッキーカラー：インディゴ　✦ キーワード：学び"},
+    {theme:"✦ 楽観主義が正解",main:"難しく考えすぎていませんか。\n今月は射手座らしく\n楽観的に、明るく前を向いて。",hoshi:"木星があなたに楽観の力を授けています。\nポジティブが運を引き寄せる月。",lucky:"✦ ラッキーカラー：オレンジ　✦ キーワード：楽観"},
+    {theme:"✦ 真実を語る",main:"婉曲な言い方より\n今月は率直に本音を届けてみて。\nあなたの真っ直ぐさが人を動かします。",hoshi:"夏の射手の星が誠実さを輝かせています。\n正直な言葉が道を開く月。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：誠実"},
+    {theme:"✦ 哲学が力になる",main:"なぜ生きるのか、何が大切なのか。\n今月は深い問いと向き合ってみて。\nその問いがあなたを豊かにします。",hoshi:"木星が哲学的な問いを投げかけています。\n深く考えることが答えを呼ぶ月。",lucky:"✦ ラッキーカラー：パープル　✦ キーワード：哲学"},
+    {theme:"✦ 矢を放つ勇気",main:"狙いを定めたら\nあとは放つだけです。\n今月は恐れず、矢を放ってください。",hoshi:"射手の星があなたに勇気を与えています。\n思い切ることで的に当たる月。",lucky:"✦ ラッキーカラー：ゴールデンイエロー　✦ キーワード：勇気"},
+    {theme:"✦ 旅が心を広げる",main:"遠くへ行くことが今月のテーマです。\n実際の旅でも、本でも、想像の中でも。\n心が広がることをしてみて。",hoshi:"木星が旅と拡大を促しています。\n広げることで豊かになる月。",lucky:"✦ ラッキーカラー：ターコイズブルー　✦ キーワード：旅"},
+    {theme:"✦ 知恵を分かち合う",main:"あなたが学んできたことを\n誰かに伝えてみてください。\n教えることで自分の知恵も深まります。",hoshi:"射手座に師の星が輝いています。\n伝えることで自分も育つ月。",lucky:"✦ ラッキーカラー：ロイヤルブルー　✦ キーワード：伝授"},
+    {theme:"✦ 未来を信じて放つ",main:"未来は必ず明るいと信じてください。\n今月のあなたのポジティブな意図が\n来年の現実を作り始めます。",hoshi:"木星が未来の扉を開けています。\n意図することが未来になる月。",lucky:"✦ ラッキーカラー：サンライズオレンジ　✦ キーワード：意図"},
+    {theme:"✦ 一年の冒険を讃える",main:"今年あなたが踏み込んだ\n新しい世界の数を数えてみて。\n勇気ある一歩一歩が宝です。",hoshi:"木星が一年の冒険を照らしています。\n自分の勇気を讃えて締めくくって。",lucky:"✦ ラッキーカラー：エメラルドグリーン　✦ キーワード：冒険"},
+  ],
+  // 9: 山羊座
+  [
+    {theme:"✦ 頂上へ向かって",main:"今月のあなたには\n目標に向かって着実に進む\n特別なエネルギーが満ちています。",hoshi:"山羊座の星が始まりの力を与えています。\n今月立てた計画は必ず実現します。",lucky:"✦ ラッキーカラー：ダークグレー　✦ キーワード：目標"},
+    {theme:"✦ コツコツが最強",main:"華やかな近道より\n地道な積み重ねの方が\n山羊座のあなたには合っています。",hoshi:"土星があなたの忍耐を讃えています。\n続けることが最強の武器の月。",lucky:"✦ ラッキーカラー：ブラック　✦ キーワード：継続"},
+    {theme:"✦ 新しい計画を立てる",main:"春に向けて\n新しい目標を立ててみてください。\n計画することがすでに一歩です。",hoshi:"土星が新しい挑戦を後押しします。\n計画倒れでも構わない、まず描いて。",lucky:"✦ ラッキーカラー：フォレストグリーン　✦ キーワード：計画"},
+    {theme:"✦ 実力を信じる",main:"これまで積み上げてきた力を\n今月は信じて前に出てみてください。\nあなたにはその価値があります。",hoshi:"山羊の星があなたの実力を認めています。\n自信を持って行動する月。",lucky:"✦ ラッキーカラー：チャコール　✦ キーワード：実力"},
+    {theme:"✦ 自分への投資",main:"今月はスキルアップや\n自分をよくすることへの投資を\n惜しまないでください。",hoshi:"土星が成長への投資を促しています。\n自分に使ったお金と時間は必ず返ってくる月。",lucky:"✦ ラッキーカラー：ダークネイビー　✦ キーワード：投資"},
+    {theme:"✦ 責任感が輝きになる",main:"あなたの誠実さと責任感は\n周りの人から深く信頼されています。\n今月はその信頼に誠実に応えて。",hoshi:"夏の土星があなたの誠実さを讃えています。\n信頼が財産になる月。",lucky:"✦ ラッキーカラー：ネイビー　✦ キーワード：信頼"},
+    {theme:"✦ 権威より本質を",main:"肩書きや権威に頼らなくていいのです。\n今月はあなた自身の本質を\n堂々と見せていきましょう。",hoshi:"山羊の星があなたの本質を輝かせています。\n素のあなたが最強の月。",lucky:"✦ ラッキーカラー：アンスラサイト　✦ キーワード：本質"},
+    {theme:"✦ 休むことも仕事のうち",main:"頑張り続けることが当たり前になっていませんか。\n今月は意識して休んでみて。\n充電した分だけ、また高く登れます。",hoshi:"山羊の星が休息を許可しています。\n立ち止まることが前進になる月。",lucky:"✦ ラッキーカラー：スレートブルー　✦ キーワード：休息"},
+    {theme:"✦ 長期目線で歩む",main:"今月起きることは\n長い目で見れば必ず意味があります。\n焦らず、着実に歩んでいきましょう。",hoshi:"土星が長期的な成功を約束しています。\n今月の種が数年後に実る月。",lucky:"✦ ラッキーカラー：オリーブグリーン　✦ キーワード：長期"},
+    {theme:"✦ 結果が出る月",main:"長く続けてきたことが\n今月形になりそうです。\n焦らず、その時を静かに待って。",hoshi:"山羊の星が実りを告げています。\n努力が報われる予感の月。",lucky:"✦ ラッキーカラー：ゴールド　✦ キーワード：実り"},
+    {theme:"✦ 自分を高め続ける",main:"今の自分に満足しつつも\n常に成長を求めるあなたは\n本当に輝いています。",hoshi:"土星が継続的な成長を称えています。\n学び続けることが最大の強みの月。",lucky:"✦ ラッキーカラー：ダークグリーン　✦ キーワード：成長"},
+    {theme:"✦ 山の頂から見渡す",main:"一年の終わりに\n今年登ってきた山を振り返って。\nあなたはこんなに高いところまで来たのです。",hoshi:"山羊の星が一年の登頂を讃えています。\n自分の努力を誇って。",lucky:"✦ ラッキーカラー：スノーホワイト　✦ キーワード：達成"},
+  ],
+  // 10: 水瓶座
+  [
+    {theme:"✦ 革命は小さな一歩から",main:"世界を変えたいなら\n今日の小さな行動から始まります。\n今月はあなたらしい一歩を踏み出して。",hoshi:"天王星があなたの革新を後押しします。\n小さな変化が大きな流れになる月。",lucky:"✦ ラッキーカラー：エレクトリックブルー　✦ キーワード：革新"},
+    {theme:"✦ 個性が世界を救う",main:"あなたの独自の視点は\n誰も持っていない宝です。\n今月はその個性を存分に活かして。",hoshi:"天王星があなたの個性を輝かせています。\n他と違うことが強みになる月。",lucky:"✦ ラッキーカラー：コバルトブルー　✦ キーワード：個性"},
+    {theme:"✦ 未来を先取りする",main:"今月のあなたのアイデアは\n時代の半歩先を行っています。\n信じて形にしてみて。",hoshi:"春の天王星があなたの先見性を輝かせています。\n先を行く勇気が花開く月。",lucky:"✦ ラッキーカラー：ネオンブルー　✦ キーワード：先見"},
+    {theme:"✦ 仲間と未来を作る",main:"同じ理想を持つ人と繋がると\n今月は大きなエネルギーが生まれます。\n一人より仲間と動いてみて。",hoshi:"水瓶座に連帯の星が輝いています。\n仲間と共鳴する月です。",lucky:"✦ ラッキーカラー：シアン　✦ キーワード：連帯"},
+    {theme:"✦ 常識を疑ってみる",main:"当たり前だと思っていることを\n今月は一度疑ってみてください。\nその先に新しい発見があります。",hoshi:"天王星があなたの思考を解放します。\n固定概念を手放す月。",lucky:"✦ ラッキーカラー：ターコイズ　✦ キーワード：解放"},
+    {theme:"✦ 人道的な愛を",main:"個人を超えた大きな愛を\n今月のあなたは感じています。\n誰かのために動くことで自分も輝きます。",hoshi:"夏の水瓶の星が博愛を促しています。\n大きな愛が返ってくる月。",lucky:"✦ ラッキーカラー：スカイブルー　✦ キーワード：博愛"},
+    {theme:"✦ テクノロジーを味方に",main:"新しいツールやテクノロジーを\n積極的に取り入れてみてください。\n変化に乗ることで波に乗れます。",hoshi:"水瓶座に革新の星が輝いています。\n新しいものを取り入れる月。",lucky:"✦ ラッキーカラー：シルバー　✦ キーワード：革新"},
+    {theme:"✦ 俯瞰の視点で",main:"近すぎて見えていないことがあります。\n今月は少し引いた目線で\n全体像を眺めてみて。",hoshi:"天王星があなたに鳥の目を与えます。\n俯瞰が答えを見せる月。",lucky:"✦ ラッキーカラー：アイスブルー　✦ キーワード：俯瞰"},
+    {theme:"✦ 自分の正義を生きる",main:"誰かに合わせた正しさより\nあなた自身が正しいと思うことを\n今月は貫いてみてください。",hoshi:"水瓶の星があなたの信念を守っています。\n自分の正義に従う月。",lucky:"✦ ラッキーカラー：ウルトラマリン　✦ キーワード：信念"},
+    {theme:"✦ 仲間に感謝する",main:"あなたの周りにいる人たちは\n同じ志を持つ特別な存在です。\n今月はその仲間に感謝を伝えて。",hoshi:"水瓶の星が繋がりの大切さを伝えています。\n感謝が絆を深める月。",lucky:"✦ ラッキーカラー：ブルーグレー　✦ キーワード：感謝"},
+    {theme:"✦ 変革の扉を開ける",main:"今月起こる変化は\n未来のあなたへの贈り物です。\n恐れず、その扉を開けてみて。",hoshi:"天王星が変革の扉を示しています。\n変化を受け入れることが鍵の月。",lucky:"✦ ラッキーカラー：エレクトリック　✦ キーワード：変革"},
+    {theme:"✦ 一年の革新を讃える",main:"今年あなたが起こした\n小さな革命はいくつありましたか。\nそのすべてが世界を少し良くしています。",hoshi:"天王星が一年の革新を照らしています。\n変えてきた自分を誇って。",lucky:"✦ ラッキーカラー：ダイヤモンドブルー　✦ キーワード：革新"},
+  ],
+  // 11: 魚座
+  [
+    {theme:"✦ 夢を現実に近づける",main:"今月のあなたは\n夢と現実の橋を渡る力があります。\n心の中にある夢を、一つ言葉にしてみて。",hoshi:"海王星があなたの夢を育てています。\n想像したことが現実になり始める月。",lucky:"✦ ラッキーカラー：シーフォームグリーン　✦ キーワード：夢"},
+    {theme:"✦ 共感が愛になる",main:"あなたが誰かの痛みに寄り添うとき\nそこに本物の愛があります。\n今月はその優しさをそのまま届けて。",hoshi:"海王星があなたの共感力を輝かせています。\n寄り添うことで深い縁が生まれる月。",lucky:"✦ ラッキーカラー：ラベンダー　✦ キーワード：共感"},
+    {theme:"✦ 感性が春に溶ける",main:"あなたの繊細な感性は\n春の光の中で特別に輝きます。\n感じるままに表現してみて。",hoshi:"春の海王星があなたの感性を解放します。\n表現することで魂が喜ぶ月。",lucky:"✦ ラッキーカラー：サクラ　✦ キーワード：表現"},
+    {theme:"✦ 境界を超える愛",main:"自分と他者の境界が\n溶けていく感覚があるなら\nそれはあなたの愛が大きくなっている証。",hoshi:"海王星があなたの愛を拡大しています。\n大きな愛を受け取り、届ける月。",lucky:"✦ ラッキーカラー：パールピンク　✦ キーワード：無条件の愛"},
+    {theme:"✦ 内側の宇宙へ",main:"今月は外へ向かうより\n自分の内側を深く探ってみて。\nそこに宇宙と繋がる扉があります。",hoshi:"魚の星があなたの内宇宙を照らしています。\n瞑想や静かな時間が宝になる月。",lucky:"✦ ラッキーカラー：ディープシー　✦ キーワード：内省"},
+    {theme:"✦ 流れに身を委ねる",main:"頑張りすぎているなら\n今月は少しだけ流れに任せてみて。\n抵抗をやめると自然に運ばれます。",hoshi:"夏の海王星があなたに委任を促しています。\n手放すと流れに乗れる月。",lucky:"✦ ラッキーカラー：アクア　✦ キーワード：委任"},
+    {theme:"✦ 芸術が魂に触れる",main:"今月は音楽、絵、映画、詩など\n何か芸術に触れてみてください。\n魂が震える体験があなたを変えます。",hoshi:"海王星が芸術的感性を呼び覚ましています。\n美に触れることで魂が満たされる月。",lucky:"✦ ラッキーカラー：マジェンタ　✦ キーワード：芸術"},
+    {theme:"✦ 癒しを与え、受け取る",main:"今月はヒーリングのエネルギーが\n強く流れています。\n誰かを癒すことで、自分も癒されます。",hoshi:"魚の星が癒しのエネルギーを届けています。\n与え、受け取る循環の月。",lucky:"✦ ラッキーカラー：ティール　✦ キーワード：癒し"},
+    {theme:"✦ 目に見えないものを信じる",main:"証拠がなくても\n心が感じることを信じてください。\nあなたの直感は本物です。",hoshi:"海王星があなたのスピリチュアルな感覚を開きます。\n見えない力を信じる月。",lucky:"✦ ラッキーカラー：ミスティックブルー　✦ キーワード：信じる"},
+    {theme:"✦ 優しさが世界を包む",main:"今月のあなたの優しさは\n特別な力を持っています。\n惜しみなく、その優しさを世界に届けて。",hoshi:"魚の星が慈悲のエネルギーを授けています。\n優しさが奇跡を起こす月。",lucky:"✦ ラッキーカラー：シルバーホワイト　✦ キーワード：慈悲"},
+    {theme:"✦ 夢見ることを許して",main:"現実的にならなくていいのです。\n今月は大きく、自由に、\n夢見ることを自分に許してください。",hoshi:"海王星があなたに夢見ることを許可しています。\n想像が現実の種になる月。",lucky:"✦ ラッキーカラー：ムーンシャイン　✦ キーワード：夢想"},
+    {theme:"✦ 一年の愛と夢を抱きしめる",main:"今年あなたが感じた愛と\n描いてきた夢を\nすべて抱きしめてあげてください。",hoshi:"海王星が一年の旅を照らしています。\n感じてきたすべてが宝です。",lucky:"✦ ラッキーカラー：スターダスト　✦ キーワード：包容"},
+  ],
+];
+
+const now=new Date();
+const currentMonth=now.getMonth();
+const monthNames=["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+
+document.getElementById('title-month').textContent=now.getFullYear()+'年 '+monthNames[currentMonth];
+
+let selected=null;
+const grid=document.getElementById('sign-grid');
+const getBtn=document.getElementById('get-btn');
+
+signs.forEach((s,i)=>{
+  const btn=document.createElement('button');
+  btn.className='sign-btn';
+  btn.innerHTML=`<span class="sign-sym">${s.sym}</span><span class="sign-name">${s.name}</span>`;
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.sign-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selected={...s,idx:i};getBtn.disabled=false;
+  });
+  grid.appendChild(btn);
+});
+
+function spawnSparkles(){
+  const stage=document.getElementById('hoshi-stage');
+  const rect=stage.getBoundingClientRect();
+  const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+  const cols=['#fffde0','#c8d8ff','#ffc8e8','#f0d080','#e8d0ff'];
+  for(let i=0;i<22;i++){
+    const sp=document.createElement('div');sp.className='sparkle';
+    const a=Math.random()*Math.PI*2,dist=40+Math.random()*90,size=2+Math.random()*4;
+    sp.style.cssText=`width:${size}px;height:${size}px;background:${cols[i%cols.length]};left:${cx-size/2}px;top:${cy-size/2}px;--sx:${Math.cos(a)*dist}px;--sy:${Math.sin(a)*dist}px;--st:${.5+Math.random()*.9}s;`;
+    document.body.appendChild(sp);setTimeout(()=>sp.remove(),1600);
+  }
+}
+
+getBtn.addEventListener('click',()=>{
+  if(!selected)return;
+  const m=messages[selected.idx][currentMonth];
+  spawnSparkles();
+  setTimeout(()=>{
+    document.getElementById('mc-sign').textContent=selected.sym;
+    document.getElementById('mc-sign').style.color=selected.color;
+    document.getElementById('mc-name').textContent=selected.name+' / '+selected.en;
+    document.getElementById('mc-name').style.color=selected.color;
+    document.getElementById('mc-period').textContent=now.getFullYear()+'年 '+monthNames[currentMonth]+'のメッセージ';
+    document.getElementById('mc-theme').textContent=m.theme;
+    document.getElementById('mc-theme').style.color=selected.color;
+    document.getElementById('mc-main').textContent=m.main;
+    document.getElementById('mc-hoshi').textContent=m.hoshi;
+    document.getElementById('mc-lucky').textContent=m.lucky;
+    document.getElementById('mc-lucky').style.color=selected.color;
+    document.getElementById('step-select').style.display='none';
+    document.getElementById('msg-card').style.display='block';
+  },500);
+});
+
+document.getElementById('back-btn').addEventListener('click',()=>{
+  document.getElementById('msg-card').style.display='none';
+  document.getElementById('step-select').style.display='flex';
+});
+
+const sky=document.getElementById('sky');
+for(let i=0;i<160;i++){
+  const s=document.createElement('div');s.className='star';
+  const size=Math.random()<.08?2.5+Math.random()*1.5:Math.random()<.25?1.5+Math.random():.6+Math.random()*.8;
+  const cols=['#fffde0','#c8d8ff','#ffffff','#ffc8e8','#d0f0ff'];
+  s.style.cssText=`width:${size}px;height:${size}px;background:${cols[Math.floor(Math.random()*cols.length)]};left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--min:${.1+Math.random()*.3};animation-delay:${Math.random()*3}s;`;
+  sky.appendChild(s);
+}
+for(let i=0;i<4;i++){
+  const m=document.createElement('div');m.className='meteor';
+  m.style.cssText=`left:${10+Math.random()*70}%;top:${Math.random()*30}%;--md:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;`;
+  sky.appendChild(m);
+}
+</script>
+</body>
+</html>
